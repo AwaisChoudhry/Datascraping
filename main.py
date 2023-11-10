@@ -26,22 +26,13 @@ def clean_filename(filename):
     return filename
 
 def download_image(url, save_path):
-    # Prepend the protocol if missing
     if not url.startswith('http'):
         url = 'https:' + url
-
     response = requests.get(url, stream=True)
-
     if response.status_code == 200:
-        # Create a folder named "images" if it doesn't exist
-        os.makedirs("images", exist_ok=True)
-        
-        # Extract the filename from the URL and clean it
+        os.makedirs("images", exist_ok=True)        
         image_filename = clean_filename(os.path.basename(urlparse(url).path))
-
-        # Combine the folder path and the cleaned filename
         save_path = os.path.join("images", image_filename)
-
         with open(save_path, 'wb') as image_file:
             for chunk in response.iter_content(chunk_size=128):
                 image_file.write(chunk)
@@ -124,7 +115,7 @@ def scrape_products(url, download_images=True):
                 })
 
                 if download_images and product_image_url:
-                    image_filename = f"{product_name}.jpg"  # Change the filename as per your requirement
+                    image_filename = f"{product_name}.jpg"  
                     download_image(product_image_url, image_filename)
 
         else:
